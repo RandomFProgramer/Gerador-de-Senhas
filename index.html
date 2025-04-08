@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Senhas</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <h1>Gerador de Senhas</h1>
+    <div class="content">
+    <label for="tamanho">Tamanho da Senha:</label>
+    <input type="number" id="tamanho" min="1" max="20" value="12" onchange="atualizarMax()"><br>
+
+    <span>
+        <label><input type="checkbox" id="maiusculas" checked> Incluir Letras Maiúsculas</label>
+        <input type="number" id="limiteMaiusculas" placeholder="1" style="width: 25px;" min="1"
+            onchange="atualizarMax()" value="1"><br>
+    </span>
+
+    <span>
+        <label><input type="checkbox" id="minusculas" checked> Incluir Letras Minúsculas</label>
+        <input type="number" id="limiteMinusculas" placeholder="1" style="width: 25px;" min="1"
+            onchange="atualizarMax()" value="1"><br>
+    </span>
+
+    <span>
+        <label><input type="checkbox" id="numeros" checked> Incluir Números</label>
+        <input type="number" id="limiteNumeros" placeholder="1" style="width: 25px;" min="1" onchange="atualizarMax()"
+            value="1"><br>
+    </span>
+
+    <span>
+        <label><input type="checkbox" id="especiais" checked> Incluir Caracteres Especiais</label>
+        <input type="number" id="limiteEspeciais" placeholder="1" style="width: 25px;" min="1" onchange="atualizarMax()"
+            value="1"><br>
+    </span>
+
+    <button onclick="gerarSenha()">Gerar Senha</button>
+
+    <h2>Senha Gerada:</h2>
+    <input type="text" id="senha" readonly>
+</div>
+    <script>
+        function atualizarMax() {
+            const tamanho = document.getElementById('tamanho').value;
+            const limiteMaiusculas = document.getElementById('limiteMaiusculas');
+            const limiteMinusculas = document.getElementById('limiteMinusculas');
+            const limiteNumeros = document.getElementById('limiteNumeros');
+            const limiteEspeciais = document.getElementById('limiteEspeciais');
+
+            limiteEspeciais.max = tamanho / 4;
+            limiteMaiusculas.max = tamanho / 4;
+            limiteMinusculas.max = tamanho / 4;
+            limiteNumeros.max = tamanho / 4;
+
+        }
+
+        function gerarSenha() {
+            const tamanho = document.getElementById('tamanho').value;
+            const incluirMaiusculas = document.getElementById('maiusculas').checked;
+            const limiteMaiusculas = document.getElementById('limiteMaiusculas').value;
+            const incluirMinusculas = document.getElementById('minusculas').checked;
+            const limiteMinusculas = parseInt(document.getElementById('limiteMinusculas').value);
+            const incluirNumeros = document.getElementById('numeros').checked;
+            const limiteNumeros = parseInt(document.getElementById('limiteNumeros').value);
+            const incluirEspeciais = document.getElementById('especiais').checked;
+            const limiteEspeciais = parseInt(document.getElementById('limiteEspeciais').value);
+
+
+            let senha = '';
+            let caracteres = {
+                maiusculas: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+                minusculas: 'abcdefghijklmnopqrstuvwxyz',
+                numeros: '0123456789',
+                especiais: '!@#$%^&*()_+[]{}|;:,.<>?'
+            };
+
+            // Adiciona os caracteres especificados até os limites
+
+            for (let i = 0; i < limiteMaiusculas; i++) {
+                if (incluirMaiusculas) {
+                    senha += caracteres.maiusculas.charAt(Math.floor(Math.random() * caracteres.maiusculas.length));
+                }
+            }
+            for (let i = 0; i < limiteMinusculas; i++) {
+                if (incluirMinusculas) {
+                    senha += caracteres.minusculas.charAt(Math.floor(Math.random() * caracteres.minusculas.length));
+                }
+            }
+            for (let i = 0; i < limiteNumeros; i++) {
+                if (incluirNumeros) {
+                    senha += caracteres.numeros.charAt(Math.floor(Math.random() * caracteres.numeros.length));
+                }
+            }
+            for (let i = 0; i < limiteEspeciais; i++) {
+                if (incluirEspeciais) {
+                    senha += caracteres.especiais.charAt(Math.floor(Math.random() * caracteres.especiais.length));
+                }
+
+            }
+
+            if (senha.length != tamanho) {
+                for (let i = 0; i < limiteMaiusculas; i++) {
+                    if (incluirMaiusculas) {
+                        senha += caracteres.maiusculas.charAt(Math.floor(Math.random() * caracteres.maiusculas.length));
+                    }
+                }
+                for (let i = 0; i < limiteMinusculas; i++) {
+                    if (incluirMinusculas) {
+                        senha += caracteres.minusculas.charAt(Math.floor(Math.random() * caracteres.minusculas.length));
+                    }
+                }
+                for (let i = 0; i < limiteNumeros; i++) {
+                    if (incluirNumeros) {
+                        senha += caracteres.numeros.charAt(Math.floor(Math.random() * caracteres.numeros.length));
+                    }
+                }
+                for (let i = 0; i < limiteEspeciais; i++) {
+                    if (incluirEspeciais) {
+                        senha += caracteres.especiais.charAt(Math.floor(Math.random() * caracteres.especiais.length));
+                    }
+
+                }
+            }
+
+            if (incluirNumeros === false && incluirEspeciais === false && incluirMinusculas === false && incluirMaiusculas === false) {
+                caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+[]{}|;:,.<>?'
+                for (let i = 0; i < tamanho; i++) {
+                    const indice = Math.floor(Math.random() * caracteres.length);
+                    senha += caracteres[indice];
+                }
+            }
+
+            document.getElementById('senha').value = senha;
+        }
+    </script>
+</body>
+
+</html>
